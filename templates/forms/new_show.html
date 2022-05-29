@@ -1,0 +1,44 @@
+{% extends 'layouts/main.html' %}
+{% block title %}New Show Listing{% endblock %}
+{% block content %}
+  <div class="form-wrapper">
+    <div class="alert alert-success" id="response_msg" role="alert" style="display: none;"></div>
+    <form method="post" class="form" id="form-new-show">
+      <h3 class="form-heading">List a new show</h3>
+      <div class="form-group">
+        <label for="artist_id">Artist ID</label>
+        <small>ID can be found on the Artist's Page</small>
+        {{ form.artist_id(class_ = 'form-control', autofocus = true) }}
+      </div>
+      <div class="form-group">
+        <label for="venue_id">Venue ID</label>
+        <small>ID can be found on the Venue's Page</small>
+        {{ form.venue_id(class_ = 'form-control', autofocus = true) }}
+      </div>
+      <div class="form-group">
+          <label for="start_time">Start Time</label>
+          {{ form.start_time(class_ = 'form-control', placeholder='YYYY-MM-DD HH:MM', autofocus = true) }}
+        </div>
+      <input type="submit" value="Create Show" class="btn btn-primary btn-lg btn-block">
+    </form>
+  </div>
+{% endblock %}
+{% block js_scripts %}
+<script>
+  $(document).ready(function(){
+    $('#form-new-show').submit(function(ev){
+      ev.preventDefault();
+      sendForm({
+        form: '#form-new-show',
+        url: '/shows/create',
+        action: 'create',
+        body: JSON.stringify({
+              'artist_id':$('#artist_id').val(),
+              'venue_id':$('#venue_id').val(),
+              'start_time': $('#start_time').val()
+          })
+      })
+    });
+  });
+</script>
+{% endblock %}
